@@ -42,9 +42,7 @@ const App = () => {
         exercises: 14
       }
     ]
-  }
-
-
+  };
   return (
     <>
       <Header course={course.name} />
