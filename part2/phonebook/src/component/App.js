@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+import axios from 'axios'
+
 import Filter from './Filter'
 import Persons from './Persons'
 import PersonForm from './PersonForm'
 
-const App = (props) => {
-    const [persons, setPersons] = useState(props.persons)
+const App = () => {
+    const [persons, setPersons] = useState([])
 
     //this state is use for the filter name
-    const [filteredPersona, setFiltered] = useState(persons)
+    const [filteredPersona, setFiltered] = useState()
 
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
@@ -15,6 +18,17 @@ const App = (props) => {
     const handleNameChange = (event) => setNewName(event.target.value)
 
     const handleNumberChange = (event) => setNewNumber(event.target.value)
+
+    //effect callback
+    const hook = () => {
+        axios.get('http://localhost:3001/persons')
+            .then(response => {
+                setPersons(response.data)
+                setFiltered(response.data)
+            })
+    }
+
+    useEffect(hook, [])
 
     //helper function
     const isValidData = () => {
@@ -35,7 +49,6 @@ const App = (props) => {
                 number: newNumber
             }
             setPersons(persons.concat(personObj))
-            setFiltered(persons.concat(personObj))
         }
     }
 
@@ -63,7 +76,9 @@ const App = (props) => {
                 handleNumberChange={handleNumberChange}
             />
             <h3>Numbers</h3>
-            <Persons persons={filteredPersona} />
+            <Persons
+                persons={filteredPersona ? filteredPersona : persons}
+            />
         </div>
     )
 }
