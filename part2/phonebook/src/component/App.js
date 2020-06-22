@@ -4,6 +4,7 @@ import personService from '../services/person'
 import Filter from './Filter'
 import Persons from './Persons'
 import PersonForm from './PersonForm'
+import Notification from './Notification'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -13,6 +14,7 @@ const App = () => {
 
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
+    const [notification, setNotification] = useState()
 
     const handleNameChange = (event) => setNewName(event.target.value)
 
@@ -31,13 +33,12 @@ const App = () => {
 
     //helper function
     const isValidData = () => {
-        if (newName.trim() === '' || newNumber.length < 3) return
+        if (newName.trim() === '' || newNumber.length < 3) return false
 
         const findedPerson = persons.find(person => person.name === newName)
 
         if (findedPerson) {
             const result = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
-            console.log()
             if (result) {
                 const newPerson = {
                     id: findedPerson.id,
@@ -45,8 +46,17 @@ const App = () => {
                     number: newNumber
                 }
                 handleOnUpdate(newPerson)
+                setNewName('')
+                setNewNumber('')
             }
+            return false
         }
+        return true
+    }
+
+    const cleanForm = () => {
+        setNewName('')
+        setNewNumber('')
     }
 
     const handleOnSubmit = (event) => {
@@ -58,8 +68,15 @@ const App = () => {
             }
             personService
                 .create(personObj)
-                .then(() => {
-                    setPersons(persons.concat(personObj))
+                .then((createdPerson) => {
+                    setPersons(persons.concat(createdPerson))
+
+                    cleanForm()
+
+                    setNotification({ message: `Added ${newName}`, isSuccess: true })
+                    setTimeout(() => {
+                        setNotification(null)
+                    }, 5000)
                 })
         }
     }
@@ -88,13 +105,25 @@ const App = () => {
         personService
             .Update(updatePersonObj)
             .then(personData => {
-                setPersons(persons.map(person => person.id === personData.id ? personData : person))
+                setPersons(persons.map(person => person.name === personData.name ? personData : person))
+
+                cleanForm()
+            })
+            .catch(() => {
+                setNotification({ message: `Information of ${updatePersonObj.name} has been removed from server`, isSuccess: false })
+
+                setPersons(persons.filter(p => p.id !== updatePersonObj.id))
+
+                setTimeout(() => {
+                    setNotification(null)
+                }, 5000)
             })
     }
 
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification notification={notification} />
             <Filter onChange={handleFilterChange} />
             <h3>add a new number</h3>
             <PersonForm
