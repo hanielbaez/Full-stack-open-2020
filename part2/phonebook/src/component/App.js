@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
-import axios from 'axios'
+import personService from '../services/person'
 
 import Filter from './Filter'
 import Persons from './Persons'
@@ -21,10 +20,10 @@ const App = () => {
 
     //effect callback
     const hook = () => {
-        axios.get('http://localhost:3001/persons')
-            .then(response => {
-                setPersons(response.data)
-                setFiltered(response.data)
+        personService
+            .getAll()
+            .then(personsData => {
+                setPersons(personsData)
             })
     }
 
@@ -32,13 +31,22 @@ const App = () => {
 
     //helper function
     const isValidData = () => {
-        const isAlready = persons.some(person =>
-            person.name === newName || person.name === '')
-        if (isAlready) {
-            window.alert(`${newName} is already added to phonebook`)
-            return false
+        if (newName.trim() === '' || newNumber.length < 3) return
+
+        const findedPerson = persons.find(person => person.name === newName)
+
+        if (findedPerson) {
+            const result = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+            console.log()
+            if (result) {
+                const newPerson = {
+                    id: findedPerson.id,
+                    name: newName,
+                    number: newNumber
+                }
+                handleOnUpdate(newPerson)
+            }
         }
-        return true
     }
 
     const handleOnSubmit = (event) => {
@@ -48,7 +56,11 @@ const App = () => {
                 name: newName,
                 number: newNumber
             }
-            setPersons(persons.concat(personObj))
+            personService
+                .create(personObj)
+                .then(() => {
+                    setPersons(persons.concat(personObj))
+                })
         }
     }
 
@@ -61,6 +73,23 @@ const App = () => {
                 .includes(value)
         )
         setFiltered(filtered)
+    }
+
+    const handleOnDelete = (person) => {
+        const result = window.confirm(`Delete ${person.name}`)
+        if (result) {
+            personService
+                .Delete(person.id)
+            setPersons(persons.filter(p => p.id !== person.id))
+        }
+    }
+
+    const handleOnUpdate = (updatePersonObj) => {
+        personService
+            .Update(updatePersonObj)
+            .then(personData => {
+                setPersons(persons.map(person => person.id === personData.id ? personData : person))
+            })
     }
 
     return (
@@ -78,6 +107,7 @@ const App = () => {
             <h3>Numbers</h3>
             <Persons
                 persons={filteredPersona ? filteredPersona : persons}
+                handleOnDelete={handleOnDelete}
             />
         </div>
     )
