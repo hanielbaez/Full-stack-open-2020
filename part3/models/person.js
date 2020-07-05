@@ -1,6 +1,8 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
 
+mongoose.set('useFindAndModify', false)
+
 const url = process.env.MONGODB_URI
 console.log(`Using: ${url}`)
 
@@ -27,12 +29,3 @@ person.set('toJSON', {
 })
 
 module.exports = mongoose.model('Person', person)
-
-// Person.create({
-//     name: 'Haniel Baez',
-//     number: '08830-34343',
-//     date: new Date()
-// }, (err, result) => {
-//     if (err) console.log(`The error is ${err}`)
-//     console.log(`All went well ${result}`)
-// })

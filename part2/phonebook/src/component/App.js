@@ -46,8 +46,6 @@ const App = () => {
                     number: newNumber
                 }
                 handleOnUpdate(newPerson)
-                setNewName('')
-                setNewNumber('')
             }
             return false
         }
@@ -105,7 +103,10 @@ const App = () => {
         personService
             .Update(updatePersonObj)
             .then(personData => {
-                setPersons(persons.map(person => person.name === personData.name ? personData : person))
+                let newListPersons = persons.map(person => person.name === personData.name ? personData : person)
+
+                setPersons(newListPersons)
+                setFiltered(newListPersons)
 
                 cleanForm()
             })

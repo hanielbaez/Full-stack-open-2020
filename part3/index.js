@@ -1,83 +1,101 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 
 var morgan = require('morgan')
 const Person = require('./models/person')
+const { response } = require('express')
+const { findOneAndUpdate, findByIdAndUpdate } = require('./models/person')
 
+app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
 
-morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
+morgan.token('body', function (request, response) { return JSON.stringify(request.body) })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (request, response) => {
     Person
-        .find({}, (error, documents) => {
-            res.send(documents)
+        .find({})
+        .then(persons => {
+            response.send(persons)
         })
 })
 
-app.get('/info', (req, res) => {
+app.get('/info', (request, response) => {
     Person
-        .find({}, (error, documents) => {
+        .find({})
+        .then((documents) => {
             const infoHTML = `<p>
     Phonebook has info for ${documents.length} people
     </p>
     <p>${Date()}</p>`
-
             res.send(infoHTML)
         })
-
-
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (request, response, next) => {
     Person
-        .findById(req.params.id, (error, person) => {
-            if (error) return res.status(404).end()
-            res.send(person)
+        .findById(request.params.id)
+        .then(person => {
+            response.send(person)
         })
+        .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.put('/api/persons/:id', (request, response, next) => {
     Person
-        .findByIdAndDelete(req.params.id, (error, response) => {
-            if (error) console.log(error)
-            res.status(204).end()
+        .findByIdAndUpdate(request.params.id, request.body)
+        .then(updatedPerson => {
+            response.status(204).send(updatedPerson)
         })
+        .catch(error => next(error))
 })
 
-const errorHandling = (res, body) => {
+const checkBody = (response, body) => {
+
     if (!body.name) {
-        return res.status(400).json({ error: 'name is missing' })
+        return response.status(400).json({ error: 'name is missing' })
     } else if (!body.number) {
-        return res.status(400).json({ error: 'number is missing' })
-    } else {
-        Person
-            .find({}, (error, documents) => {
-                const noUnique = documents.find(person => person.name === body.name)
-                if (noUnique) {
-                    return res.status(400).json({ error: 'name must be unique' })
-                }
-            })
+        return response.status(400).json({ error: 'number is missing' })
     }
 }
 
-app.post('/api/persons', (req, res) => {
-    const body = req.body
+app.post('/api/persons', (request, response, next) => {
+    const body = request.body
 
-    errorHandling(res, body)
-
-    const newPerson = {
+    checkBody(response, body)
+    const person = new Person({
         name: body.name,
         number: body.number
-    }
+    })
 
-    Person
-        .create(newPerson, (error, document) => {
-            res.status(201).send(document)
+    person.save()
+        .then(savedPerson => {
+            response.json(savedPerson)
         })
+        .catch(error => next(error))
 })
+
+const errorHandle = (error, request, response, next) => {
+    console.log(error)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+    next(error)
+}
+
+app.delete('/api/persons/:id', (request, response, next) => {
+    Person
+        .findByIdAndDelete(request.params.id)
+        .then(status => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
+})
+
+app.use(errorHandle)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () =>
