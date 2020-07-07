@@ -76,6 +76,12 @@ const App = () => {
                         setNotification(null)
                     }, 5000)
                 })
+                .catch(error => {
+                    setNotification({ message: error.response.data, isSuccess: false })
+                    setTimeout(() => {
+                        setNotification(null)
+                    }, 5000)
+                })
         }
     }
 
@@ -110,8 +116,8 @@ const App = () => {
 
                 cleanForm()
             })
-            .catch(() => {
-                setNotification({ message: `Information of ${updatePersonObj.name} has been removed from server`, isSuccess: false })
+            .catch((error) => {
+                setNotification({ message: error.response.data, isSuccess: false })
 
                 setPersons(persons.filter(p => p.id !== updatePersonObj.id))
 

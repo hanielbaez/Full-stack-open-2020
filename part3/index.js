@@ -44,8 +44,10 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
+    const opts = { runValidators: true }
+
     Person
-        .findByIdAndUpdate(request.params.id, request.body)
+        .findByIdAndUpdate(request.params.id, request.body, opts)
         .then(updatedPerson => {
             response.status(204).send(updatedPerson)
         })
