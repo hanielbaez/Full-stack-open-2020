@@ -72,6 +72,31 @@ test('missing title and url return code 400', async () => {
         .expect(400)
 })
 
+test('success remove a blog post with a valid id', async () => {
+    const blogs = await helper.blogsInDb()
+    await api
+        .delete(`/api/blogs/${blogs[0].id}`)
+        .expect(200)
+
+    const blogsInDb = await helper.blogsInDb()
+    const ids = blogsInDb.map(blog => blog.id)
+
+    expect(ids).not.toContain(blogs[0].id)
+})
+
+test('success update the amount of likes for a blog post', async () => {
+    const blogs = await helper.blogsInDb()
+    const blogToUpdate = { ...blogs[0], likes: blogs[0].likes + 2 }
+
+    await api
+        .put(`/api/blogs/${blogs[0].id}`)
+        .send(blogToUpdate)
+        .expect(204)
+
+    const blogsUpdated = await helper.blogsInDb()
+    expect(blogsUpdated[0]).toMatchObject(blogToUpdate)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
