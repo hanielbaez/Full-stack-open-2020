@@ -2,22 +2,21 @@ const express = require('express')
 const blogRouter = express.Router()
 const Blog = require('../model/blogs')
 
-blogRouter.get('/', (request, response) => {
-    Blog
-        .find({})
-        .then(blogs => {
-            response.json(blogs)
-        })
+blogRouter.get('/', async (request, response) => {
+    const blogs = await Blog.find({})
+    response.json(blogs)
 })
 
-blogRouter.post('/', (request, response) => {
-    const blog = new Blog(request.body)
+blogRouter.post('/', async (request, response) => {
 
-    blog
-        .save()
-        .then(result => {
-            response.status(201).json(result)
-        })
+    if (request.body.title && request.body.url) {
+        const blog = new Blog(request.body)
+        const result = await blog.save()
+        response.status(201).json(result)
+    } else {
+        response.status(400).end({ error: 'missing properties' })
+    }
+
 })
 
 module.exports = blogRouter
