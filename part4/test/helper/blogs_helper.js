@@ -1,4 +1,4 @@
-const Blog = require('../model/blogs')
+const Blog = require('../../model/blogs')
 
 const initialBlogs = [{
     title: "WakaSpam",
@@ -42,6 +42,7 @@ const newBlog = {
     author: "Haniel",
     url: "http://hanielbaez.com",
     likes: 777,
+    user: "5f13b82bc425591be677a4b6"
 }
 
 const blogsInDb = async () => {

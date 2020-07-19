@@ -1,5 +1,5 @@
-const listHelper = require('../utils/list_helper')
-const listBlogHelper = require('./list_blogs_helper')
+const listHelper = require('../../utils/list_helper')
+const listBlogHelper = require('./test_blogs_helper')
 
 test('dummy return one', () => {
     const result = listHelper.dummy(listBlogHelper.blogs)
@@ -13,17 +13,17 @@ describe('total likes', () => {
     })
 
     test('when list has only one blog equals the likes of that', () => {
-        expect(listHelper.totalLikes([listBlogHelper.blogs[0]])).toBe(4)
+        expect(listHelper.totalLikes([listBlogHelper.initialBlogs[0]])).toBe(4)
     })
 
     test('of a bigger list is calculated right', () => {
-        expect(listHelper.totalLikes(listBlogHelper.blogs)).toBe(23)
+        expect(listHelper.totalLikes(listBlogHelper.initialBlogs)).toBe(23)
     })
 })
 
 describe('favorite blog', () => {
     test('finds out which blog has most likes', () => {
-        expect(listHelper.favoriteBlog(listBlogHelper.blogs)).toEqual(
+        expect(listHelper.favoriteBlog(listBlogHelper.initialBlogs)).toEqual(
             {
                 title: "Dance-ML",
                 author: "Obed Baez",
@@ -35,12 +35,12 @@ describe('favorite blog', () => {
 
 describe('most blogs', () => {
     test('returns the author who has the largest amount of blogs', () => {
-        expect(listHelper.mostBlogs(listBlogHelper.blogs)).toEqual({ "author": "Haniel Baez", "blogs": 3 })
+        expect(listHelper.mostBlogs(listBlogHelper.initialBlogs)).toEqual({ "author": "Haniel Baez", "blogs": 3 })
     })
 })
 
 describe('most likes', () => {
     test('the author, whose blog posts have the largest amount of likes', () => {
-        expect(listHelper.mostLikes(listBlogHelper.blogs)).toEqual({ "author": "Another Person", "likes": 9 })
+        expect(listHelper.mostLikes(listBlogHelper.initialBlogs)).toEqual({ "author": "Another Person", "likes": 9 })
     })
 })

@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkhhbmllbCIsImlkIjoiNWYxM2I4MmJjNDI1NTkxYmU2NzdhNGI2IiwiaWF0IjoxNTk1MTI3OTkwfQ.X6P3Fd1eyPIfZrmtw7pM3X_0-Ef9WEqHeJJFGWwptl8
 
 {
-    "title": "How bad do you want it?",
+    "title": "Obed user should not be able to remove this token",
     "author": "Haniel Baez",
     "url": "www.hanilebaez.com",
-    "likes": 1
+    "likes": 5
 }
