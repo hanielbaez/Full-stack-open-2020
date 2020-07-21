@@ -22,6 +22,7 @@ blogRouter.get('/', async (request, response) => {
 
 blogRouter.post('/', async (request, response) => {
     const body = request.body
+    console.log(`This is the body ${body}`)
     const decodedToken = jwt.verify(request.token, config.SECRET)
 
     if (!request.token || !decodedToken.id) {
@@ -47,7 +48,7 @@ blogRouter.delete('/:id', async (request, response) => {
     }
 
     const blogToEliminate = await Blog.findById(request.params.id)
-    if(!blogToEliminate){
+    if (!blogToEliminate) {
         return response.status(404).json({ error: 'blog no found' })
     }
 

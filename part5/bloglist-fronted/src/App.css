@@ -1,0 +1,11 @@
+.alertGood {
+    border-left: 5px green solid;
+    background-color: lightgray;
+    padding: 10px;
+}
+
+.alertBad {
+    border-left: 5px red solid;
+    background-color: lightgray;
+    padding: 10px;
+}

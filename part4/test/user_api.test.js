@@ -6,14 +6,14 @@ const api = supertest(app)
 const helper = require('./helper/user_helper')
 const User = require('../model/users')
 
-beforeEach(async () => {
+beforeAll(async () => {
     await User.deleteMany({})
 
     const passwordHash = await bcrypt.hash('dumPassword', 10)
     const newUser = new User({
         username: "Dooncam",
         name: "Haniel",
-        password: passwordHash
+        passwordHash: passwordHash
     })
     await newUser.save()
 })
@@ -76,8 +76,6 @@ describe('invalid user will not be created', () => {
     })
 
 })
-
-
 
 afterAll(() => {
     mongoose.connection.close()
