@@ -49,8 +49,7 @@ const Blog = ({ blogObject, removeBlogList }) => {
                         like
                     </button></p>
                 <p> {blog.author}</p>
-                {
-                    user.username === blog.user?.username && removeButton}
+                {user?.username === blog?.user?.username && removeButton}
             </TogglableVisibility >
         </div >
     )

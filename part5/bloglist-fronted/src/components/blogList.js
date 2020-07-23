@@ -1,7 +1,14 @@
 import React from 'react'
 import Blog from './blog'
+import PropType from 'prop-types'
 
 const BlogList = ({ blogs, removeBlogList }) => {
+
+    BlogList.prototype = {
+        blogs: PropType.array.isRequired,
+        removeBlogList: PropType.func.isRequired
+    }
+
     return (
         <>
             {
