@@ -12,7 +12,7 @@ const loginRouter = require('./controller/login')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
     .then(() => logger.info('MongoDB connecte'))
 
 app.use(cors())

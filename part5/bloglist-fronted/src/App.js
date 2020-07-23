@@ -1,19 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import loginServices from './services/login'
 import blogServices from './services/blog'
-import Blog from './components/blog'
 import './App.css'
+import LoginForm from './components/loginForm'
+import BlogForm from './components/blogForm'
+import TogglableVisibility from './components/toggleVisibility'
+import BlogList from './components/blogList'
+import Alert from './components/alert'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState(null)
   const [alert, setAlert] = useState(null)
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogServices.getAll().then(blogs => {
+      blogs.sort((a, b) => b.likes - a.likes)
       setBlogs(blogs)
     })
   }, [])
@@ -26,6 +32,19 @@ const App = () => {
       blogServices.setToken(user.token)
     }
   }, [])
+
+  const addBlog = async (blogObject) => {
+    const response = await blogServices.create(blogObject)
+    blogFormRef.current.toggleVisibility()
+
+    if (response) {
+      setBlogs(blogs.concat(response))
+      timeOutAlert({
+        state: true,
+        text: `${JSON.stringify(blogObject.title)} created successfully`
+      })
+    }
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -50,26 +69,6 @@ const App = () => {
     }
   }
 
-  const createBlogHandle = async (event) => {
-    event.preventDefault()
-    if (!newBlog || !newBlog.title || !newBlog.author || !newBlog.url) {
-      timeOutAlert({
-        state: false,
-        text: 'Missing blog\'s atributes'
-      })
-      return
-    }
-    const response = await blogServices.create(newBlog)
-    if (response) {
-      setBlogs(blogs.concat(response))
-      setNewBlog(null)
-      timeOutAlert({
-        state: true,
-        text: `${JSON.stringify(newBlog.title)} created successfully`
-      })
-    }
-  }
-
   const handleLogOut = () => {
     window.localStorage.removeItem('loggedBlogUser')
     setUser(null)
@@ -79,67 +78,6 @@ const App = () => {
     })
   }
 
-  const loginForm = (
-    <>
-      < h2 > log in to application</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username <input onChange={({ target }) => { setUsername(target.value) }}></input>
-        </div>
-        <div>
-          password <input type="password" onChange={({ target }) => { setPassword(target.value) }}></input>
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </>
-  )
-
-  const showBlogs = (
-    <>
-      <h2>blogs</h2>
-      {user?.username} logged in
-      <button onClick={handleLogOut}>logout</button>
-      {
-        blogs.map(blog =>
-          <div key={blog.id}>
-            <Blog blog={blog} />
-          </div>
-        )
-      }
-    </>
-  )
-
-  const createBlogForm = (
-    <>
-      <form onSubmit={createBlogHandle}>
-        <div>
-          title: <input
-            value={newBlog?.title ?? ''}
-            onChange={({ target }) => {
-              setNewBlog({ ...newBlog, title: target.value })
-            }}>
-
-          </input>
-        </div>
-        <div>
-          author: <input
-            value={newBlog?.author ?? ''}
-            onChange={({ target }) => { setNewBlog({ ...newBlog, author: target.value }) }}>
-
-          </input>
-        </div>
-        <div>
-          url: <input
-            value={newBlog?.url ?? ''}
-            onChange={({ target }) => { setNewBlog({ ...newBlog, url: target.value }) }}>
-
-          </input>
-        </div>
-        <button type="submit">create</button>
-      </form>
-    </>
-  )
-
   const timeOutAlert = (alert) => {
     setAlert(alert)
     setTimeout(() => {
@@ -147,19 +85,32 @@ const App = () => {
     }, 5000)
   }
 
+  const removeBlogFromList = blogToRemove => {
+    const newListBlogs = blogs.filter(blog => blog.id !== blogToRemove.id)
+    console.log(newListBlogs)
+    setBlogs(newListBlogs)
+  }
+
   return (
     <>
-      {
-        alert && <p className={alert.state ? 'alertGood' : 'alertBad'}>{alert.text}</p>
-      }
+      <Alert alert={alert} />
       {
         user !== null
           ?
           <>
-            {showBlogs}
-            {createBlogForm}
+            <h2>blogs</h2>
+            {user?.username} logged in
+            <button onClick={handleLogOut}>logout</button>
+            <TogglableVisibility buttonTitle='new note' ref={blogFormRef}>
+              <BlogForm createBlog={addBlog} timeOutAlert={timeOutAlert} />
+            </TogglableVisibility>
+            <BlogList blogs={blogs} removeBlogList={removeBlogFromList} />
           </>
-          : loginForm
+          : <LoginForm
+            handleLogin={handleLogin}
+            setUsername={setUsername}
+            setPassword={setPassword}
+          />
       }
     </>
   )
