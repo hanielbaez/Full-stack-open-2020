@@ -25,21 +25,23 @@ const BlogForm = ({ createBlog, timeOutAlert }) => {
                         value={newBlog?.title ?? ''}
                         onChange={({ target }) => {
                             setNewBlog({ ...newBlog, title: target.value })
-                        }}>
+                        }} className='title'>
 
                     </input>
                 </div>
                 <div>
                     author: <input
                         value={newBlog?.author ?? ''}
-                        onChange={({ target }) => { setNewBlog({ ...newBlog, author: target.value }) }}>
+                        onChange={({ target }) => { setNewBlog({ ...newBlog, author: target.value }) }}
+                        className='author'>
 
                     </input>
                 </div>
                 <div>
                     url: <input
                         value={newBlog?.url ?? ''}
-                        onChange={({ target }) => { setNewBlog({ ...newBlog, url: target.value }) }}>
+                        onChange={({ target }) => { setNewBlog({ ...newBlog, url: target.value }) }}
+                        className='url'>
 
                     </input>
                 </div>

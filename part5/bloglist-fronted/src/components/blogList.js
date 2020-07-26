@@ -15,7 +15,8 @@ const BlogList = ({ blogs, removeBlogList }) => {
                 blogs.map(blog =>
                     <div key={blog.id}>
                         <Blog blogObject={blog}
-                            removeBlogList={removeBlogList} />
+                            removeBlogList={removeBlogList}
+                            forLikeTest={() => { }} />
                     </div>
                 )
             }

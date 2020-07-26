@@ -1,7 +1,7 @@
 {
   "blogs": [
     {
-      "likes": 7,
+      "likes": 8,
       "title": "WakaSpam",
       "author": "Haniel Baez",
       "url": "http://hanilebaez.com",
@@ -21,19 +21,21 @@
       "author": "Haniel Baez",
       "url": "www.hanielbaez.com",
       "id": "BeVN3KW",
-      "likes": 5
+      "likes": 6
     },
     {
       "title": "Be decipline",
       "author": "Haniel Baez",
       "url": "www.hanielbaez.com",
-      "id": "tWVw1bW"
+      "id": "tWVw1bW",
+      "likes": null
     },
     {
       "title": "It is create by Dooncam",
       "author": "Haniel Baez",
       "url": "www.hanielbaez.com",
-      "id": "ZqzOqjs"
+      "id": "ZqzOqjs",
+      "likes": null
     }
   ],
   "login": {
