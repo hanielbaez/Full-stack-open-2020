@@ -25,7 +25,6 @@ const Blog = ({ blogObject, removeBlogList, forLikeTest }) => {
 
     const handleClickRemove = async event => {
         event.preventDefault()
-        console.log(`${user.username}`)
 
         const isOkRemove = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
         if (isOkRemove) {
@@ -36,7 +35,7 @@ const Blog = ({ blogObject, removeBlogList, forLikeTest }) => {
 
     const removeButton = (
         <div>
-            <button type='button' onClick={handleClickRemove}>remove</button>
+            <button id='remove-button' type='button' onClick={handleClickRemove}>remove</button>
         </div>
     )
 
@@ -46,12 +45,12 @@ const Blog = ({ blogObject, removeBlogList, forLikeTest }) => {
             < TogglableVisibility buttonTitle='view' >
                 <p>{blog.url}</p>
                 <p>likes {blog.likes}
-                    <button type='button'
+                    <button id='like-button' type='button'
                         onClick={handleClickLike}>
                         like
                     </button></p>
                 <p> {blog.author}</p>
-                {user?.username === blog?.user?.username && removeButton}
+                {user?.name === blog?.author && removeButton}
             </TogglableVisibility >
         </div >
     )

@@ -16,7 +16,8 @@
     "server": "json-server --watch db.json --port 3001 --routes routes.json",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -33,10 +34,11 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:3003",
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
+    "cypress": "^4.11.0",
     "eslint-plugin-jest": "^23.18.0",
     "jest-dom": "^4.0.0"
   }

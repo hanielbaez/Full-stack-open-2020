@@ -45,7 +45,7 @@ const BlogForm = ({ createBlog, timeOutAlert }) => {
 
                     </input>
                 </div>
-                <button type="submit">create</button>
+                <button type="submit" id='submit-button'>create</button>
             </form>
         </>
     )

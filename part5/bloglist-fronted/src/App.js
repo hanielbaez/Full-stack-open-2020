@@ -100,7 +100,7 @@ const App = () => {
           <>
             <h2>blogs</h2>
             {user?.username} logged in
-            <button onClick={handleLogOut}>logout</button>
+            <button id='logout-button' onClick={handleLogOut}>logout</button>
             <TogglableVisibility buttonTitle='new note' ref={blogFormRef}>
               <BlogForm createBlog={addBlog} timeOutAlert={timeOutAlert} />
             </TogglableVisibility>

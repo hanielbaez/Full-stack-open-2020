@@ -29,7 +29,10 @@ const updateLikes = async blog => {
 }
 
 const remove = async id => {
-    const response = await axios.delete(`${baseUrl}/${id}`)
+    const config = {
+        headers: { Authorization: token },
+    }
+    const response = await axios.delete(`${baseUrl}/${id}`, config)
     return response
 }
 
