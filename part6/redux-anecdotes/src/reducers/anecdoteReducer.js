@@ -1,4 +1,4 @@
-let anecdotesAtStart = [
+let initilaState = [
     {
         content: 'If it hurts, do it more often',
         votes: 2,
@@ -16,7 +16,7 @@ let anecdotesAtStart = [
     }
 ]
 
-const anecdoteReducer = (state = anecdotesAtStart, action) => {
+const anecdoteReducer = (state = initilaState, action) => {
 
     switch (action.type) {
         case 'ADD_VOTE':
