@@ -1,14 +1,14 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
-import { notificationVote } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote }) => {
     const dispatch = useDispatch()
 
-    const handleClick = ({ id, content }) => {
-        dispatch(addVote(id))
-        dispatch(notificationVote(content))
+    const handleClick = anecdote => {
+        dispatch(addVote(anecdote))
+        dispatch(setNotification(anecdote.content, 3))
     }
     return (
         <div className='anecdote'>

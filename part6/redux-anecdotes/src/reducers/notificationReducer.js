@@ -1,30 +1,23 @@
 const notificationReducer = (state = { visibility: 'hidden ' }, action) => {
     switch (action.type) {
-        case 'LIKE_NOTIFICATION':
-            state = { msg: action.msg }
-            return state
-        case 'CREATE_NOTIFICATION':
-            state = { msg: action.msg }
-            return state
         case 'HIDE_NOTIFICATION':
-            state = { visibility: 'hidden' }
-            return state
+            return { visibility: 'hidden' }
+        case 'SET_NOTIFICATION':
+            return { data: action.data, visibility: 'visible' }
         default:
             return state
     }
 }
 
-export const notificationVote = title => {
-    return {
-        type: 'LIKE_NOTIFICATION',
-        msg: `you voted ${title}`
-    }
-}
-
-export const notificationAdd = () => {
-    return {
-        type: 'CREATE_NOTIFICATION',
-        msg: 'note created successfully'
+export const setNotification = (text, seconds) => {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_NOTIFICATION',
+            data: text
+        })
+        setTimeout(() => {
+            dispatch(notificationHide())
+        }, seconds * 1000)
     }
 }
 
