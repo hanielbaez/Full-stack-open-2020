@@ -1,3 +1,5 @@
+let timeoutID;
+
 const notificationReducer = (state = { visibility: 'hidden ' }, action) => {
     switch (action.type) {
         case 'HIDE_NOTIFICATION':
@@ -11,11 +13,14 @@ const notificationReducer = (state = { visibility: 'hidden ' }, action) => {
 
 export const setNotification = (text, seconds) => {
     return async dispatch => {
+        clearTimeout(timeoutID)
+        
         dispatch({
             type: 'SET_NOTIFICATION',
             data: text
         })
-        setTimeout(() => {
+
+        timeoutID = setTimeout(() => {
             dispatch(notificationHide())
         }, seconds * 1000)
     }

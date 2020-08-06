@@ -25,18 +25,6 @@ export const addVote = anecdote => {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 export const addAnecdote = data => {
     return async dispatch => {
         const newAnecdote = await anecdoteServices.create(data)
