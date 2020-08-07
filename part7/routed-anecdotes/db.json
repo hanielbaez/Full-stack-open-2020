@@ -1,0 +1,46 @@
+{
+  "anecdotes": [
+    {
+      "content": "If it hurts, do it more often",
+      "author": "Jez Humble",
+      "info": "https://martinfowler.com/bliki/FrequencyReducesDifficulty.html",
+      "votes": 0,
+      "id": "1"
+    },
+    {
+      "content": "Premature optimization is the root of all evil",
+      "author": "Donald Knuth",
+      "info": "http://wiki.c2.com/?PrematureOptimization",
+      "votes": 0,
+      "id": "2"
+    },
+    {
+      "content": "Take ownership",
+      "author": "Haniel Baez",
+      "info": "www.hanielbaez.com",
+      "votes": 0,
+      "id": "g8UfUeu"
+    },
+    {
+      "content": "Whatever it take",
+      "author": "Haniel Baez",
+      "info": "www.hanielbaez.com",
+      "votes": 0,
+      "id": "VRnGYMd"
+    },
+    {
+      "content": "Pressure made Diamond",
+      "author": "Haniel Baez",
+      "info": "www.hanielbaez.com",
+      "votes": 0,
+      "id": "TC-A4v8"
+    },
+    {
+      "content": "Be the example of the winners",
+      "author": "Haniel Baez ",
+      "info": "www.hanielbaez.com",
+      "votes": 0,
+      "id": "l5o-Jpa"
+    }
+  ]
+}
