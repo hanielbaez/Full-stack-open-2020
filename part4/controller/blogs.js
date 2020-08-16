@@ -22,6 +22,7 @@ blogRouter.get('/', async (request, response) => {
 
 blogRouter.post('/', async (request, response) => {
     const body = request.body
+    console.log(`The token is ${request.token}`)
     const decodedToken = jwt.verify(request.token, config.SECRET)
 
     if (!request.token || !decodedToken.id) {
@@ -32,8 +33,12 @@ blogRouter.post('/', async (request, response) => {
 
     if (body.title && body.url) {
         const blog = new Blog({ ...body, user: user._id })
-        const result = await blog.save()
-        response.status(201).json(result)
+        const savedBlog = await blog.save()
+
+        user.blogs = user.blogs.concat(savedBlog._id)
+        await user.save()
+
+        response.status(201).json(savedBlog)
     } else {
         response.status(400).end({ error: 'missing properties' })
     }
@@ -65,6 +70,14 @@ blogRouter.put('/:id', async (request, response) => {
         .findByIdAndUpdate(request.params.id, blogObject)
 
     response.status(204).json(result)
+})
+
+blogRouter.post('/:id/comments', async (request, response) => {
+    const blog = await Blog.findById(request.params.id)
+    blog.comments = request.body
+    const result = await blog.save()
+    console.log(result)
+    response.status(201).json(result)
 })
 
 module.exports = blogRouter

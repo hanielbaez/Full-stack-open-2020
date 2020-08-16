@@ -1,8 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const Alert = ({ alert }) => {
+const Alert = () => {
+    const alert = useSelector(state => state.alert)
     return (
-        alert && <p className={alert.state ? 'alertGood' : 'alertBad'}>{alert.text}</p>
+        alert && <div className={`notification ${alert.state ? 'is-success' : 'is-warning'}`}>
+            {alert.text}
+        </div>
     )
 }
 

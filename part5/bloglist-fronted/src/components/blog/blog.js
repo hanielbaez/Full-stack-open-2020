@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
-import TogglableVisibility from './toggleVisibility'
-import blogServices from '../services/blog'
+import { useDispatch } from 'react-redux'
+import { removeBlog } from '../../reducers/blog'
+import blogServices from '../../services/blog'
+import Comments from '../comment/comments'
 
-const Blog = ({ blogObject, removeBlogList, forLikeTest }) => {
-    const [blog, setBlog] = useState(blogObject)
+const Blog = ({ blogSelected }) => {
+    const [blog, setBlog] = useState(blogSelected)
+    const dispatch = useDispatch()
+
+    if (!blog) {
+        return null
+    }
 
     const user = JSON.parse(localStorage.getItem('loggedBlogUser'))
 
-    const blogStyle = {
-        borderStyle: 'solid',
-        margin: '10px',
-        padding: '4px'
-    }
-
     const handleClickLike = async event => {
         event.preventDefault()
-        forLikeTest()
         const toUpdateBlog = { ...blog, likes: blog.likes + 1 }
         await blogServices.updateLikes(toUpdateBlog)
 
@@ -29,7 +29,7 @@ const Blog = ({ blogObject, removeBlogList, forLikeTest }) => {
         const isOkRemove = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
         if (isOkRemove) {
             await blogServices.remove(blog.id)
-            removeBlogList(blog)
+            dispatch(removeBlog(blog))
         }
     }
 
@@ -40,19 +40,20 @@ const Blog = ({ blogObject, removeBlogList, forLikeTest }) => {
     )
 
     return (
-        <div className='blog' style={blogStyle}>
-            {blog.title}
-            < TogglableVisibility buttonTitle='view' >
-                <p>{blog.url}</p>
+        <div className="card">
+            <div className="box">
+                <h2>{blog.title}</h2>
+                <a href={blog.url}>{blog.url}</a>
                 <p>likes {blog.likes}
-                    <button id='like-button' type='button'
-                        onClick={handleClickLike}>
+                    <button id='like-button' type='button' onClick={handleClickLike}>
                         like
-                    </button></p>
-                <p> {blog.author}</p>
-                {user?.name === blog?.author && removeButton}
-            </TogglableVisibility >
-        </div >
+                    </button>
+                </p>
+                <p>added by {blog.author}</p>
+                {user?.username === blog?.user?.username && removeButton}
+                <Comments comments={blog.comments} />
+            </div >
+        </div>
     )
 }
 

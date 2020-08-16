@@ -1,118 +1,86 @@
-import React, { useState, useEffect, useRef } from 'react'
-import loginServices from './services/login'
+import React, { useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  Switch,
+  Route,
+  useRouteMatch
+} from 'react-router-dom'
+import { setUser } from './reducers/user'
 import blogServices from './services/blog'
 import './App.css'
 import LoginForm from './components/loginForm'
-import BlogForm from './components/blogForm'
+import BlogForm from './components/blog/blogForm'
 import TogglableVisibility from './components/toggleVisibility'
-import BlogList from './components/blogList'
+import BlogList from './components/blog/blogList'
+import Blog from './components/blog/blog'
 import Alert from './components/alert'
+import UsersList from './components/user/usersList'
+import User from './components/user/user'
+import { inizializeBlog } from './reducers/blog'
+import NavigationBar from './components/navigationBar'
 
 const App = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
-  const [blogs, setBlogs] = useState([])
-  const [alert, setAlert] = useState(null)
+  const user = useSelector(state => state.user)
+  const blogs = useSelector(state => state.blogs)
+  const dispatch = useDispatch()
 
   const blogFormRef = useRef()
-
-  useEffect(() => {
-    blogServices.getAll().then(blogs => {
-      blogs.sort((a, b) => b.likes - a.likes)
-      setBlogs(blogs)
-    })
-  }, [])
 
   useEffect(() => {
     const user = window.localStorage.getItem('loggedBlogUser')
     if (user) {
       const userObject = JSON.parse(user)
-      setUser(userObject)
-      blogServices.setToken(user.token)
+      dispatch(setUser(userObject))
+      blogServices.setToken(userObject.token)
     }
-  }, [])
+  }, [dispatch])
 
-  const addBlog = async (blogObject) => {
-    const response = await blogServices.create(blogObject)
-    blogFormRef.current.toggleVisibility()
-
-    if (response) {
-      setBlogs(blogs.concat(response))
-      timeOutAlert({
-        state: true,
-        text: `${JSON.stringify(blogObject.title)} created successfully`
-      })
-    }
-  }
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginServices.login({ username, password })
-      if (user) {
-        window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
-        blogServices.setToken(user.token)
-        setUser(user)
-
-        timeOutAlert({
-          state: true,
-          text: 'Logged successfully'
-        })
-      }
-    } catch (error) {
-      timeOutAlert({
-        state: false,
-        text: 'Invalid username or password'
-      })
-      console.log(error)
-    }
-  }
-
-  const handleLogOut = () => {
-    window.localStorage.removeItem('loggedBlogUser')
-    setUser(null)
-    timeOutAlert({
-      state: true,
-      text: 'logout successfully'
+  useEffect(() => {
+    blogServices.getAll().then(returnBlogs => {
+      returnBlogs.sort((a, b) => b.likes - a.likes)
+      dispatch(inizializeBlog(returnBlogs))
     })
-  }
+  }, [dispatch])
 
-  const timeOutAlert = (alert) => {
-    setAlert(alert)
-    setTimeout(() => {
-      setAlert(null)
-    }, 5000)
-  }
-
-  const removeBlogFromList = blogToRemove => {
-    const newListBlogs = blogs.filter(blog => blog.id !== blogToRemove.id)
-    console.log(newListBlogs)
-    setBlogs(newListBlogs)
-  }
+  const match = useRouteMatch('/blogs/:id')
+  const blogSelected = match
+    ? blogs.find(blog => {
+      return blog.id === match.params.id
+    })
+    : null
+  console.log()
 
   return (
-    <>
-      <Alert alert={alert} />
-      {
-        user !== null
-          ?
-          <>
-            <h2>blogs</h2>
-            {user?.username} logged in
-            <button id='logout-button' onClick={handleLogOut}>logout</button>
-            <TogglableVisibility buttonTitle='new note' ref={blogFormRef}>
-              <BlogForm createBlog={addBlog} timeOutAlert={timeOutAlert} />
-            </TogglableVisibility>
-            <BlogList blogs={blogs} removeBlogList={removeBlogFromList} />
-          </>
-          : <LoginForm
-            handleLogin={handleLogin}
-            setUsername={setUsername}
-            setPassword={setPassword}
-          />
-      }
-    </>
+    <div className="hero-body">
+      <div className="container">
+        <NavigationBar />
+        <Alert />
+        {
+          user !== null
+            ? <>
+              <h2>blogs</h2>
+              <Switch>
+                <Route path='/blogs/:id'>
+                  <Blog blogSelected={blogSelected} />
+                </Route>
+                <Route path='/users/:id'>
+                  <User />
+                </Route>
+                <Route path='/users'>
+                  <UsersList />
+                </Route>
+                <Route path='/'>
+                  <TogglableVisibility buttonTitle='new note' ref={blogFormRef}>
+                    <BlogForm />
+                  </TogglableVisibility>
+                  <BlogList />
+                </Route>
+              </Switch>
+            </>
+            : <LoginForm />
+        }
+      </div>
+    </div>
   )
 }
 
