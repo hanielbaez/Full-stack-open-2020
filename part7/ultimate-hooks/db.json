@@ -1,0 +1,33 @@
+{
+  "persons": [
+    {
+      "name": "Haniel Baez",
+      "number": "144-444",
+      "id": 7
+    },
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 3005
+    },
+    {
+      "name": "Test person",
+      "number": "123456789",
+      "id": 3006
+    }
+  ],
+  "notes": [
+    {
+      "content": "What do you do when nobody is watching?",
+      "id": 0
+    },
+    {
+      "content": "The winner is working when nobody is watching",
+      "id": 1
+    },
+    {
+      "content": "Test note",
+      "id": 2
+    }
+  ]
+}
