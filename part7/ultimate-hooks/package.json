@@ -9,7 +9,11 @@
     "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+<<<<<<< HEAD
     "react-scripts": "3.4.1"
+=======
+    "react-scripts": "^3.4.2"
+>>>>>>> 4f0852f6f15b8ed62af96f3eb8a83001e3c2b5f7
   },
   "scripts": {
     "start": "react-scripts start",
@@ -33,4 +37,8 @@
       "last 1 safari version"
     ]
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4f0852f6f15b8ed62af96f3eb8a83001e3c2b5f7
