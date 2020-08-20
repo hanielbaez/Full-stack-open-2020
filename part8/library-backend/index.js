@@ -34,27 +34,30 @@ let authors = [
 
 let books = [
     {
+        id: 0,
         title: 'Clean Code',
         published: 2008,
         author: 'Robert Martin',
         id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
         genres: ['refactoring']
     },
-    {
+    {   id: 1,
         title: 'Agile software development',
         published: 2002,
         author: 'Robert Martin',
         id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
         genres: ['agile', 'patterns', 'design']
     },
-    {
+    {   
+        id: 2,
         title: 'Refactoring, edition 2',
         published: 2018,
         author: 'Martin Fowler',
         id: "afa5de00-344d-11e9-a414-719c6709cf3e",
         genres: ['refactoring']
     },
-    {
+    {   
+        id: 3,
         title: 'Refactoring to patterns',
         published: 2008,
         author: 'Joshua Kerievsky',
@@ -62,6 +65,7 @@ let books = [
         genres: ['refactoring', 'patterns']
     },
     {
+        id: 4,
         title: 'Practical Object-Oriented Design, An Agile Primer Using Ruby',
         published: 2012,
         author: 'Sandi Metz',
@@ -69,6 +73,7 @@ let books = [
         genres: ['refactoring', 'design']
     },
     {
+        id: 5,
         title: 'Crime and punishment',
         published: 1866,
         author: 'Fyodor Dostoevsky',
@@ -76,6 +81,7 @@ let books = [
         genres: ['classic', 'crime']
     },
     {
+        id: 6,
         title: 'The Demon ',
         published: 1872,
         author: 'Fyodor Dostoevsky',
@@ -96,6 +102,7 @@ const typeDefs = gql`
     type Author {
         name: String!
         born: Int
+        bookCount: Int!
         id: ID!
     }
 
@@ -135,7 +142,16 @@ const resolvers = {
             }
             return bookFiltere
         },
-        allAuthors: () => authors
+        allAuthors: () =>
+            authors.map(author => {
+                const bookByAuthor = books.filter(book => book.author === author.name)
+                return {
+                    ...author,
+                    bookCount: bookByAuthor.length
+                }
+
+            })
+
     },
     Mutation: {
         addBook: (root, args) => {
