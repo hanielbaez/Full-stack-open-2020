@@ -21,11 +21,24 @@ export const AUTHOR_BORN = gql`
     }
 `
 
-export const ADD_BLOG = gql`
-mutation AddBlog($title: String!, $author: String!, $published: Int!, $genres: [String]!){
+export const ADD_BOOK = gql`
+mutation AddBook($title: String!, $author: String!, $published: Int!, $genres: [String]!){
     addBook(title: $title, author: $author, published: $published, genres: $genres){
         title
-        author
+        
+    }
+}
+`
+
+export const ALL_BOOKS = gql`
+query GetAllBooks($filterBy: String) {
+    allBooks(filterBy: $filterBy){
+        title
+        author{
+            id
+            name
+            born
+        }
         published
         genres
         id
@@ -33,13 +46,20 @@ mutation AddBlog($title: String!, $author: String!, $published: Int!, $genres: [
 }
 `
 
-export const ALL_BOOKS = gql`
-query GetAllBooks {
-    allBooks{
-        title
-        author
-        published
-        id
+export const LOGIN = gql`
+    mutation login($username: String!, $password: String!){
+        login(username: $username, password: $password){
+            value
+        }
     }
-}
+`
+
+export const CURRENT_USER = gql`
+    query currentUser{
+        me{
+            id
+            username
+            favoriteGenre
+        }
+    }
 `
