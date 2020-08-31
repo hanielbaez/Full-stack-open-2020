@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
+import { ALL_BOOKS, CURRENT_USER } from '../queries'
 
-const Recommend = ({ favoriteGenre = 'n/a' }) => {
+const Recommend = () => {
+    const favoriteGenre = useQuery(CURRENT_USER).data?.me.favoriteGenre || 'n/a'
     const { data, loading, error } = useQuery(ALL_BOOKS, {
         variables: { filterBy: favoriteGenre }
     })

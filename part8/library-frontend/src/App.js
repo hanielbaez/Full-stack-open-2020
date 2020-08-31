@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import { useQuery } from '@apollo/client'
-import { CURRENT_USER } from './queries'
-
 import Authors from './components/Authors'
 import Books from './components/Books'
 import BookForm from './components/BookForm'
@@ -12,7 +9,14 @@ import Recommend from './components/Recommend'
 const App = () => {
   const [page, setPage] = useState(<Authors />)
   const [token, setToken] = useState(null)
-  const { data } = useQuery(CURRENT_USER)
+
+  // useSubscription(BOOK_ADDED, {
+  //   onSubscriptionData: ({ subscriptionData }) => {
+  //     const addedBook = subscriptionData.data.bookAdded;
+  //     window.alert(`A new book has been added: ${addedBook.title}`);
+  //     updateCacheWith(addedBook)
+  //   }
+  // })
 
   useEffect(() => {
     setToken(localStorage.getItem('book-user-token'))
@@ -38,7 +42,7 @@ const App = () => {
             ? (
               <>
                 <button onClick={() => setPage(<BookForm />)}>add book</button>
-                <button onClick={() => setPage(<Recommend favoriteGenre={data?.me.favoriteGenre} />)} >recommendations</button>
+                <button onClick={() => setPage(<Recommend />)} >recommendations</button>
                 <button onClick={logOutHandle}>
                   logout
               </button>

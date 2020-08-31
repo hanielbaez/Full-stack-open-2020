@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
-const schema = new mongoose.Schema({
+const genreSchema = new mongoose.Schema({
+    value: { type: String }
+})
+
+const bookSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -14,9 +18,8 @@ const schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Author'
     },
-    genres: [
-        { types: String }
-    ]
+    genres: { type: Array }
+
 })
 
-module.exports = mongoose.model('Book', schema)
+module.exports = mongoose.model('Book', bookSchema)

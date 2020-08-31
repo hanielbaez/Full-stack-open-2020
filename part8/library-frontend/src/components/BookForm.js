@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client'
 
 import { ADD_BOOK, ALL_BOOKS } from '../queries'
 
-const BookForm = () => {
+const BookForm = ({ updateCacheWith }) => {
     const title = useField('text')
     const author = useField('text')
     const published = useField('number')
@@ -13,7 +13,9 @@ const BookForm = () => {
     const [genres, setGenres] = useState([])
 
     const [addBook] = useMutation(ADD_BOOK,
-        { refetchQueries: [{ query: ALL_BOOKS }] })
+        {
+            refetchQueries: [{ query: ALL_BOOKS }],
+        })
 
     const handleClick = (event) => {
         event.preventDefault()
