@@ -8,23 +8,30 @@ interface traininResult {
     average: number
 }
 
-interface parceResult {
-    trainingDays: Array<number>,
-    target: number
-}
+// interface parceResult {
+//     trainingDays: Array<number>,
+//     target: number
+// }
 
-function parseArgumentsExercises(args: Array<string>): parceResult {
-    const trainingDays = args.slice(3).map(day => Number(day));
-    const target = Number(args[2]);
+// function parseArgumentsExercises(args: Array<number>): parceResult {
+//     const trainingDays = args.slice(3).map(day => Number(day));
+//     const target = Number(args[2]);
 
-    if (!isNaN(target) && trainingDays.every(day => !isNaN(day))) {
-        return { trainingDays: trainingDays, target: Number(target) }
-    } else {
-        throw new Error('Error arguments are no type number')
-    }
-}
+//     if (!isNaN(target) && trainingDays.every(day => !isNaN(day))) {
+//         return { trainingDays: trainingDays, target: Number(target) }
+//     } else {
+//         throw new Error('Error arguments are no type number');
+//     }
+// }
 
 function calculateExercises(arr: Array<number>, target: number): traininResult {
+    if (!arr || !target) {
+        throw new Error('parameters missing');
+    }
+    else if (arr.some(n => isNaN(n)) || isNaN(target)) {
+        
+        throw new Error('malformatted parameters');
+    }
 
     const averageTraining = arr.reduce((a, b) => a + b) / arr.length;
     let rating;
@@ -48,5 +55,4 @@ function calculateExercises(arr: Array<number>, target: number): traininResult {
     }
 }
 
-const { trainingDays, target } = parseArgumentsExercises(process.argv)
-console.log(calculateExercises(trainingDays, target))
+export default calculateExercises
