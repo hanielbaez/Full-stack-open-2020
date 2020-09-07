@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/patients
+content-type: application/json
+
+{
+    "name": "Obed Baez",
+    "dateOfBirth": "1993-12-18",
+    "ssn": "235421-00T",
+    "gender": "male",
+    "occupation": "Santo Domingo"
+}

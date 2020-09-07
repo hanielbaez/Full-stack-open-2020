@@ -7,8 +7,8 @@
     "ts-node": "ts-node",
     "calculateBmi": "ts-node calculateBmi.ts",
     "exerciseCalculator": "ts-node exerciseCalculator",
-    "start": "ts-node index.ts",
-    "dev": "ts-node-dev index.ts",
+    "start": "ts-node src/index.ts",
+    "dev": "ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
