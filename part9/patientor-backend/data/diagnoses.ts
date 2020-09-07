@@ -74,6 +74,6 @@ const dianoses: Array<Diagnose> = [
         "name": "Other proliferative retinopathy",
         "latin": "Alia retinopathia proliferativa"
     }
-]
+];
 
 export default dianoses;

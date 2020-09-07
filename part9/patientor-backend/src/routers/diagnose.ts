@@ -4,6 +4,6 @@ import diagnoseService from '../services/diagnose';
 
 router.get('/', (_request, response) => {
     response.send(diagnoseService.getAll());
-})
+});
 
 export default router;

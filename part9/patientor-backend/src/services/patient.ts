@@ -9,7 +9,7 @@ const getAll = (): NoSensitiveDiaryEntry[] => {
         dateOfBirth,
         gender,
         occupation
-    }))
+    }));
 };
 
 const add = (patient: NewPatient): NoSensitiveDiaryEntry => {

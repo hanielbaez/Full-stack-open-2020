@@ -19,7 +19,7 @@ const isSsn = (param: string) => {
 
 const isOccupation = (param: string) => {
     return isString(param);
-}
+};
 
 const parseName = (text: string): string => {
     if (!isString(text)) {
@@ -59,15 +59,15 @@ const parseOccupation = (occupation: string) => {
     } else {
         return occupation;
     }
-}
+};
 
-export const toNewPatient = (object: any) => {
-    const newPatient: NewPatient = {
+export const toNewPatient = (object: any): NewPatient => {
+    const newPatient = {
         name: parseName(object.name),
         dateOfBirth: parseDate(object.dateOfBirth),
         gender: parseGender(object.gender),
         ssn: parseSsn(object.ssn),
         occupation: parseOccupation(object.occupation)
-    }
+    };
     return newPatient;
-}
+};
