@@ -11,7 +11,6 @@ app.use('/api/diagnoses', diagnoseRouter);
 app.use('/api/patients', patientRouter);
 
 app.get('/api/ping', (_request, response) => {
-    console.log('hola');
     response.status(200).send('pong');
 });
 

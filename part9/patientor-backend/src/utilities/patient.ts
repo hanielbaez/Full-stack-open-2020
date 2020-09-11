@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatient, Gender } from '../../types';
+import { Gender, NewPatient } from '../../types';
 
 const isString = (param: string): boolean => {
     return typeof param === 'string';
@@ -67,7 +67,8 @@ export const toNewPatient = (object: any): NewPatient => {
         dateOfBirth: parseDate(object.dateOfBirth),
         gender: parseGender(object.gender),
         ssn: parseSsn(object.ssn),
-        occupation: parseOccupation(object.occupation)
+        occupation: parseOccupation(object.occupation),
+        entries: []
     };
     return newPatient;
 };

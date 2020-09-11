@@ -1,18 +1,28 @@
 import patienstData from '../../data/patients';
 import uniqid from 'uniqid';
-import { NoSensitiveDiaryEntry, NewPatient } from '../../types';
+import { PublicPatient, NewPatient } from '../../types';
 
-const getAll = (): NoSensitiveDiaryEntry[] => {
-    return patienstData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+const getAll = (): PublicPatient[] => {
+    return patienstData.map(({ id, name, dateOfBirth, gender, occupation, ssn }) => ({
         id,
         name,
         dateOfBirth,
         gender,
-        occupation
+        occupation,
+        ssn,
     }));
 };
 
-const add = (patient: NewPatient): NoSensitiveDiaryEntry => {
+const get = (id: string) => {
+    const patientFound = patienstData.find(patient => patient.id === id);
+    if (patienstData) {
+        return patientFound;
+    } else {
+        return `Patient with id ${id} no founded`;
+    }
+}
+
+const add = (patient: any): NewPatient => {
     const newPatient = {
         id: uniqid(),
         ...patient
@@ -23,5 +33,6 @@ const add = (patient: NewPatient): NoSensitiveDiaryEntry => {
 
 export default {
     getAll,
-    add
+    add,
+    get
 };

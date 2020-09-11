@@ -1,12 +1,14 @@
-import {Patient} from '../types';
+import { Patient } from '../types';
+import { toNewPatient } from '../src/utilities/patient';
 
-const patients: Array<Patient> = [
+const data = [
     {
         "id": "d2773336-f723-11e9-8f0b-362b9e155667",
         "name": "John McClane",
         "dateOfBirth": "1986-07-09",
         "ssn": "090786-122X",
         "gender": "male",
+        "entries": [],
         "occupation": "New york city cop"
     },
     {
@@ -15,6 +17,7 @@ const patients: Array<Patient> = [
         "dateOfBirth": "1979-01-30",
         "ssn": "300179-77A",
         "gender": "male",
+        "entries": [],
         "occupation": "Cop"
     },
     {
@@ -23,6 +26,7 @@ const patients: Array<Patient> = [
         "dateOfBirth": "1970-04-25",
         "ssn": "250470-555L",
         "gender": "male",
+        "entries": [],
         "occupation": "Technician"
     },
     {
@@ -31,6 +35,7 @@ const patients: Array<Patient> = [
         "dateOfBirth": "1974-01-05",
         "ssn": "050174-432N",
         "gender": "female",
+        "entries": [],
         "occupation": "Forensic Pathologist"
     },
     {
@@ -39,8 +44,15 @@ const patients: Array<Patient> = [
         "dateOfBirth": "1971-04-09",
         "ssn": "090471-8890",
         "gender": "male",
+        "entries": [],
         "occupation": "Digital evangelist"
     }
 ];
+
+const patients: Patient[] = data.map(obj => {
+    const object = toNewPatient(obj) as Patient
+    object.id = obj.id
+    return object
+})
 
 export default patients;

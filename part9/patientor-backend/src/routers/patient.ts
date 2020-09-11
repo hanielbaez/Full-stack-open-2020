@@ -17,4 +17,13 @@ router.post('/', (request, response) => {
     }
 });
 
+router.get('/:id', (request, response) => {
+    let patientFound = patientService.get(request.params.id);
+    if (patientFound) {
+        response.send(patientFound);
+    } else {
+        response.status(404).send({ error: patientFound });
+    }
+})
+
 export default router;
