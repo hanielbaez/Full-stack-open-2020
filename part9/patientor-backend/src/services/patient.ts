@@ -3,13 +3,14 @@ import uniqid from 'uniqid';
 import { PublicPatient, NewPatient } from '../../types';
 
 const getAll = (): PublicPatient[] => {
-    return patienstData.map(({ id, name, dateOfBirth, gender, occupation, ssn }) => ({
+    return patienstData.map(({ id, name, dateOfBirth, gender, occupation, ssn, entries }) => ({
         id,
         name,
         dateOfBirth,
         gender,
         occupation,
         ssn,
+        entries
     }));
 };
 
