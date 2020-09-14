@@ -42,7 +42,7 @@ interface HealthCheckEntry extends BaseEntry {
 interface HospitalEntry extends BaseEntry {
     type: "Hospital";
     discharge: {
-        data: string,
+        date: string,
         criteria: string
     }
 }
@@ -68,3 +68,4 @@ export type Entry =
     | OccupationalHealthcareEntry
     | HealthCheckEntry;
 
+export type NewEntry = Omit<Entry, 'id'>;

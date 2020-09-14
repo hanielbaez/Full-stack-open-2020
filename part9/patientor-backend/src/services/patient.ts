@@ -1,6 +1,6 @@
 import patienstData from '../../data/patients';
 import uniqid from 'uniqid';
-import { PublicPatient, NewPatient } from '../../types';
+import { PublicPatient, NewPatient, NewEntry } from '../../types';
 
 const getAll = (): PublicPatient[] => {
     return patienstData.map(({ id, name, dateOfBirth, gender, occupation, ssn, entries }) => ({
@@ -32,8 +32,23 @@ const add = (patient: any): NewPatient => {
     return newPatient;
 };
 
+const addEntry = (entry: any, patientId: string): NewEntry => {
+    const newEntry = {
+        id: uniqid(),
+        ...entry
+    }
+    patienstData.map(patient => {
+        if (patient.id === patientId) {
+            patient.entries.push(newEntry);
+        }
+        return patient;
+    });
+    return newEntry;
+}
+
 export default {
     getAll,
     add,
-    get
+    get,
+    addEntry
 };
